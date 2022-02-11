@@ -60,7 +60,7 @@ public record BlogModel
 {
     public int Id { get; set; }
     public string? Name { get; set; }
-    public List<PostModel> Posts { get; set; } = new();
+    public ValueList<PostModel> Posts { get; set; } = new();
 }
 public record PostModel
 {
