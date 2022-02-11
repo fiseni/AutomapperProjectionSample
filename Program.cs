@@ -27,7 +27,6 @@ using (var scope = serviceProvider.CreateScope())
     Console.WriteLine(result.FirstOrDefault());
 }
 
-
 public class MyHandler
 {
     private readonly IConfigurationProvider _configurationProvider;
@@ -41,6 +40,7 @@ public class MyHandler
 
     public async Task<List<BlogModel>> GetBlogs()
     {
+        // This fails since it's unable to project IEnumerable<T> to ValueList<T>.
         return await _dbContext.Blogs.AsQueryable()
             .ProjectTo<BlogModel>(_configurationProvider)
             .ToListAsync();
@@ -62,6 +62,7 @@ public record BlogModel
     public string? Name { get; set; }
     public ValueList<PostModel> Posts { get; set; } = new();
 }
+
 public record PostModel
 {
     public int Id { get; set; }
@@ -171,10 +172,10 @@ public class BlogSeed
     {
         var output = new List<Blog>();
 
-        var blog1 = new Blog { Name = "Blog 1"};
+        var blog1 = new Blog { Name = "Blog 1" };
         blog1.AddPosts(new List<Post> { new Post { Title = "Post 1_1" }, new Post { Title = "Post 1_2" } });
         output.Add(blog1);
-        
+
         var blog2 = new Blog { Name = "Blog 2" };
         blog2.AddPosts(new List<Post> { new Post { Title = "Post 1_1" }, new Post { Title = "Post 1_2" } });
         output.Add(blog2);
