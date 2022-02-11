@@ -41,7 +41,7 @@ public class MyHandler
     public async Task<List<BlogModel>> GetBlogs()
     {
         // This fails since it's unable to project IEnumerable<T> to ValueList<T>.
-        return await _dbContext.Blogs.AsQueryable()
+        return await _dbContext.Blogs
             .ProjectTo<BlogModel>(_configurationProvider)
             .ToListAsync();
     }
